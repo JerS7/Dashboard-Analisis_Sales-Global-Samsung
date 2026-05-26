@@ -1,4 +1,5 @@
-﻿const rawData = JSON.parse(document.getElementById("sales-data").textContent);
+﻿let rawData = [];
+    const DATA_URL = "csvjson.json";
     const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const state = { theme: "tactile", year: "All", region: "All", category: "All", channel: "All", segment: "All" };
     const els = {
@@ -20,6 +21,23 @@
 
     function fillSelect(select, values, label = "Semua") {
       select.innerHTML = `<option value="All">${label}</option>` + values.map(value => `<option value="${String(value)}">${String(value)}</option>`).join("");
+    }
+
+    async function loadData() {
+      try {
+        const response = await fetch(DATA_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        rawData = await response.json();
+        if (!Array.isArray(rawData)) throw new Error("JSON root harus berupa array transaksi.");
+        initFilters();
+        render();
+      } catch (error) {
+        console.error("Gagal memuat data:", error);
+        document.getElementById("nodeRows").textContent = "Data error";
+        document.getElementById("nodeRevenue").textContent = "Cek JSON";
+        document.getElementById("periodRows").textContent = "0 rows";
+        document.getElementById("periodRevenue").textContent = "$0";
+      }
     }
 
     function initFilters() {
@@ -218,7 +236,7 @@
     }
 
     function drawGrid(ctx, w, h, pad) {
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.strokeStyle = css("--soft-line");
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++) {
         const y = pad.t + i * ((h - pad.t - pad.b) / 4);
@@ -306,7 +324,7 @@
     function marketBasket(rows) {
       const baskets = new Map();
       rows.forEach(row => {
-        const key = [row.sale_date, row.country, row.city, row.sales_channel, row.customer_segment, row.payment_method].join("|");
+        const key = row.sale_date || "Unknown";
         if (!baskets.has(key)) baskets.set(key, new Set());
         baskets.get(key).add(row.product_name);
       });
@@ -336,11 +354,11 @@
 
     function renderBasket(rows) {
       const result = marketBasket(rows);
-      document.getElementById("basketStats").textContent = `${fmtNumber.format(result.transactions.length)} baskets Â· min ${result.minSupport}`;
+      document.getElementById("basketStats").textContent = `${fmtNumber.format(result.transactions.length)} baskets - min ${result.minSupport}`;
       document.getElementById("nodeBundles").textContent = `${result.rules.length} rules`;
       document.getElementById("bundleList").innerHTML = result.rules.map(rule => `
         <div class="bundle-row">
-          <div class="bundle-items">${rule.antecedent.join(", ")} â†’ ${rule.consequent.join(", ")}</div>
+          <div class="bundle-items">${rule.antecedent.join(", ")} -> ${rule.consequent.join(", ")}</div>
           <div class="bundle-meta">
             <span class="pill">support ${rule.support}</span>
             <span class="pill">confidence ${(rule.confidence * 100).toFixed(1)}%</span>
@@ -414,7 +432,7 @@
         }
         ctx.setTransform(scale, 0, 0, scale, 0, 0);
         ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.strokeStyle = css("--line");
         ctx.lineWidth = 1;
         for (let y = -40; y < canvas.clientHeight + 40; y += 34) {
           ctx.beginPath();
@@ -431,7 +449,6 @@
     }
 
     window.addEventListener("resize", render);
-    initFilters();
     ambient();
-    render();
+    loadData();
 

@@ -27,19 +27,53 @@
     }
 
     body.theme-orbit {
+      --bg: #eef8ff;
+      --bg-mid: #d8efff;
+      --surface: rgba(248, 252, 255, 0.92);
+      --surface-2: rgba(226, 244, 255, 0.9);
+      --line: rgba(2, 132, 199, 0.28);
+      --text: #082f49;
+      --muted: #0369a1;
       --primary: #0284c7;
       --accent: #c026d3;
       --good: #059669;
       --warn: #b45309;
       --bad: #e11d48;
+      --shadow: 0 18px 46px rgba(2, 132, 199, 0.15);
+      --glow-primary: rgba(2, 132, 199, 0.18);
+      --glow-accent: rgba(192, 38, 211, 0.14);
+      --panel-sheen: linear-gradient(140deg, rgba(255, 255, 255, 0.88), rgba(224, 242, 254, 0.62));
+      --toolbar-bg: rgba(240, 249, 255, 0.78);
+      --node-bg: rgba(224, 242, 254, 0.78);
+      --chart-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(224, 242, 254, 0.56));
+      --soft-line: rgba(2, 132, 199, 0.16);
+      --pill-bg: rgba(255, 255, 255, 0.74);
+      --track-bg: rgba(2, 132, 199, 0.14);
     }
 
     body.theme-graphite {
+      --bg: #f4f4f5;
+      --bg-mid: #d4d4d8;
+      --surface: rgba(250, 250, 250, 0.92);
+      --surface-2: rgba(228, 228, 231, 0.86);
+      --line: rgba(63, 63, 70, 0.28);
+      --text: #18181b;
+      --muted: #52525b;
       --primary: #2563eb;
       --accent: #475569;
       --good: #16a34a;
       --warn: #ca8a04;
       --bad: #dc2626;
+      --shadow: 0 18px 46px rgba(39, 39, 42, 0.14);
+      --glow-primary: rgba(37, 99, 235, 0.13);
+      --glow-accent: rgba(71, 85, 105, 0.16);
+      --panel-sheen: linear-gradient(140deg, rgba(255, 255, 255, 0.86), rgba(228, 228, 231, 0.7));
+      --toolbar-bg: rgba(250, 250, 250, 0.76);
+      --node-bg: rgba(244, 244, 245, 0.78);
+      --chart-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(228, 228, 231, 0.58));
+      --soft-line: rgba(63, 63, 70, 0.16);
+      --pill-bg: rgba(255, 255, 255, 0.72);
+      --track-bg: rgba(63, 63, 70, 0.14);
     }
 
     * { box-sizing: border-box; }
