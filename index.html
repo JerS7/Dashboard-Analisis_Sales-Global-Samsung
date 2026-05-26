@@ -23,17 +23,16 @@
     </header>
 
     <section class="toolbar" aria-label="Filter dashboard">
-      <div class="control">
-        <label for="themeSelect">Theme</label>
-        <select id="themeSelect">
-          <option value="tactile">Tactile</option>
-          <option value="orbit">Orbit Neon</option>
-          <option value="graphite">Graphite Focus</option>
-        </select>
-      </div>
-      <div class="control">
-        <label for="modeToggle">Mode</label>
-        <button id="modeToggle" type="button" aria-pressed="false">Light Mode</button>
+      <div class="control theme-control">
+        <label>Mode & Theme</label>
+        <div class="theme-dock" aria-label="Mode dan theme dashboard">
+          <button id="modeToggle" class="icon-button mode-button" type="button" aria-label="Aktifkan light mode" aria-pressed="false">
+            <span class="sr-only">Light Mode</span>
+          </button>
+          <button class="icon-button theme-button active" type="button" data-theme="tactile" aria-label="Theme Tactile" aria-pressed="true">&#9733;</button>
+          <button class="icon-button theme-button" type="button" data-theme="orbit" aria-label="Theme Orbit Neon" aria-pressed="false">&#9675;</button>
+          <button class="icon-button theme-button" type="button" data-theme="graphite" aria-label="Theme Graphite Focus" aria-pressed="false">&#9632;</button>
+        </div>
       </div>
       <div class="control">
         <label for="yearFilter">Tahun</label>

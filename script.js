@@ -2,8 +2,8 @@
     const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const state = { theme: "tactile", mode: "dark", year: "All", region: "All", category: "All", channel: "All", segment: "All" };
     const els = {
-      theme: document.getElementById("themeSelect"),
       mode: document.getElementById("modeToggle"),
+      themeButtons: document.querySelectorAll("[data-theme]"),
       year: document.getElementById("yearFilter"),
       region: document.getElementById("regionFilter"),
       category: document.getElementById("categoryFilter"),
@@ -29,19 +29,21 @@
       fillSelect(els.category, unique("category"), "Semua Kategori");
       fillSelect(els.channel, unique("sales_channel"), "Semua Channel");
       fillSelect(els.segment, unique("customer_segment"), "Semua Segmen");
-      els.theme.addEventListener("change", () => {
-        state.theme = els.theme.value;
-        setTheme(state.theme);
-        render();
+      els.themeButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          state.theme = button.dataset.theme;
+          setTheme(state.theme);
+          render();
+        });
       });
       els.mode.addEventListener("click", () => {
         state.mode = state.mode === "dark" ? "light" : "dark";
         setMode(state.mode);
         render();
       });
-      Object.entries(els).filter(([key]) => !["theme", "mode"].includes(key)).forEach(([key, select]) => {
-        select.addEventListener("change", () => {
-          state[key] = select.value;
+      ["year", "region", "category", "channel", "segment"].forEach(key => {
+        els[key].addEventListener("change", () => {
+          state[key] = els[key].value;
           render();
         });
       });
@@ -52,12 +54,18 @@
     function setTheme(theme) {
       document.body.classList.toggle("theme-orbit", theme === "orbit");
       document.body.classList.toggle("theme-graphite", theme === "graphite");
+      els.themeButtons.forEach(button => {
+        const active = button.dataset.theme === theme;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
     }
 
     function setMode(mode) {
       const isLight = mode === "light";
       document.body.classList.toggle("mode-light", isLight);
-      els.mode.textContent = isLight ? "Dark Mode" : "Light Mode";
+      els.mode.classList.toggle("active", isLight);
+      els.mode.setAttribute("aria-label", isLight ? "Aktifkan dark mode" : "Aktifkan light mode");
       els.mode.setAttribute("aria-pressed", String(isLight));
     }
 
