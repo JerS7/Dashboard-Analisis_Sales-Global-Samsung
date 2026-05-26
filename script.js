@@ -1,8 +1,9 @@
 ﻿const rawData = JSON.parse(document.getElementById("sales-data").textContent);
     const monthOrder = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const state = { theme: "tactile", year: "All", region: "All", category: "All", channel: "All", segment: "All" };
+    const state = { theme: "tactile", mode: "dark", year: "All", region: "All", category: "All", channel: "All", segment: "All" };
     const els = {
       theme: document.getElementById("themeSelect"),
+      mode: document.getElementById("modeToggle"),
       year: document.getElementById("yearFilter"),
       region: document.getElementById("regionFilter"),
       category: document.getElementById("categoryFilter"),
@@ -28,18 +29,36 @@
       fillSelect(els.category, unique("category"), "Semua Kategori");
       fillSelect(els.channel, unique("sales_channel"), "Semua Channel");
       fillSelect(els.segment, unique("customer_segment"), "Semua Segmen");
-      Object.entries(els).forEach(([key, select]) => {
+      els.theme.addEventListener("change", () => {
+        state.theme = els.theme.value;
+        setTheme(state.theme);
+        render();
+      });
+      els.mode.addEventListener("click", () => {
+        state.mode = state.mode === "dark" ? "light" : "dark";
+        setMode(state.mode);
+        render();
+      });
+      Object.entries(els).filter(([key]) => !["theme", "mode"].includes(key)).forEach(([key, select]) => {
         select.addEventListener("change", () => {
           state[key] = select.value;
-          if (key === "theme") setTheme(select.value);
           render();
         });
       });
+      setTheme(state.theme);
+      setMode(state.mode);
     }
 
     function setTheme(theme) {
       document.body.classList.toggle("theme-orbit", theme === "orbit");
       document.body.classList.toggle("theme-graphite", theme === "graphite");
+    }
+
+    function setMode(mode) {
+      const isLight = mode === "light";
+      document.body.classList.toggle("mode-light", isLight);
+      els.mode.textContent = isLight ? "Dark Mode" : "Light Mode";
+      els.mode.setAttribute("aria-pressed", String(isLight));
     }
 
     function filteredData() {
