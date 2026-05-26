@@ -1,1 +1,2 @@
-# Dashboard-Analisis_Sales-Global-Samsung
+# Dashboard untuk tugas Kuliah
+Isi bisa langsung diliahat dalam csvjson
